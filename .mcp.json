@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "context7": {
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
+      }
+    },
+    "memory-engram": {
+      "command": "node",
+      "args": ["mcp-servers/memory-engram/dist/index.js"],
+      "env": {
+        "MEMORY_EMBEDDINGS_PROVIDER": "local"
+      }
+    },
+    "obsidian-bridge": {
+      "command": "node",
+      "args": ["mcp-servers/obsidian-bridge/dist/index.js"],
+      "env": {
+        "VAULT_PATH": "vault-demo"
+      }
+    }
+  }
+}

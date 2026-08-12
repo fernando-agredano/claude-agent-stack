@@ -1,0 +1,41 @@
+:root {
+  --bg: #F4F6F8;
+  --surface: #FFFFFF;
+  --ink: #1B2430;
+  --ink-muted: #5B6B7C;
+  --accent: #2B4C7E;
+  --accent-soft: #E6F1FB;
+  --working: #1E8E5A;
+  --working-soft: #E1F5EE;
+  --error: #B4432D;
+  --error-soft: #FAECE7;
+  --grid-line: #DCE3EA;
+  --folder-agents: #1D9E75;
+  --folder-inbox: #D85A30;
+  --folder-raiz: #5B6B7C;
+
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+  overscroll-behavior-y: none;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  overscroll-behavior-y: none;
+}
+
+button {
+  font-family: var(--font-mono);
+}

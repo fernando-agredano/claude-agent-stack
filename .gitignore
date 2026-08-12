@@ -1,0 +1,15 @@
+.env
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+mcp-servers/memory-engram/data/*.db
+mcp-servers/memory-engram/data/*.sqlite*
+vault-demo/.obsidian/workspace*
+vault-demo/.trash/
+mcp-servers/obsidian-bridge/test/.tmp-vault/
+dashboard/server/test/.tmp-dashboard.db*
+dashboard/client/dist/
+.DS_Store
+*.log

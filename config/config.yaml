@@ -1,0 +1,23 @@
+orchestration:
+  engine: claude-code   # "claude-code" | "api"
+  default_model: inherit
+
+memory:
+  backend: sqlite
+  path: ./mcp-servers/memory-engram/data/memory.db
+  embeddings_provider: local
+
+obsidian:
+  vault_path: ./vault-demo
+  inbox_folder: 00-Inbox
+  agents_folder: Agents
+
+dashboard:
+  enabled: true
+  port: 4000
+  client_port: 5173
+  poll_interval_ms: 1000
+
+context7:
+  enabled: true
+  requires_api_key: false
