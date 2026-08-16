@@ -1,46 +1,46 @@
 # Claude Agent Stack
 
-Un stack de desarrollo completo para orquestar agentes de IA con **Claude Code**: orquestador + subagentes especializados, memoria persistente propia, integración con **Obsidian**, **skills** reutilizables, servidores **MCP** (incluyendo **Context7**), y un **dashboard en vivo** con grafo interactivo del vault y panel de memoria.
+A complete development stack for orchestrating AI agents with **Claude Code**: orchestrator + specialized subagents, its own persistent memory, integration with **Obsidian**, reusable **skills**, **MCP** servers (including **Context7**), and a **live dashboard** with an interactive vault graph and memory panel.
 
-## Tabla de contenidos
+## Table of Contents
 
-- [Qué incluye](#qué-incluye)
-- [Requisitos previos](#requisitos-previos)
-- [Instalación](#instalación)
-- [Cómo se usa](#cómo-se-usa)
-- [El dashboard](#el-dashboard)
-- [Configuración](#configuración)
-- [Uso opcional con API key](#uso-opcional-con-api-key)
-- [Estructura del repositorio](#estructura-del-repositorio)
-- [Solución de problemas](#solución-de-problemas)
+- [What It Includes](#what-it-includes)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Usage](#usage)
+- [The Dashboard](#the-dashboard)
+- [Configuration](#configuration)
+- [Optional API Key Usage](#optional-api-key-usage)
+- [Repository Structure](#repository-structure)
+- [Troubleshooting](#troubleshooting)
 - [Roadmap](#roadmap)
 
-## Qué incluye
+## What It Includes
 
-| Componente | Tecnología | Estado |
+| Component | Technology | Status |
 |---|---|---|
-| Orquestador + 4 subagentes | Claude Code nativo (`.claude/agents/*.md`) | ✅ |
-| `memory-engram` | Node.js + TypeScript + SQLite | ✅ probado |
-| `obsidian-bridge` | Node.js + TypeScript | ✅ probado |
-| Vault de Obsidian de ejemplo | Markdown | ✅ |
-| Skill de ejemplo | Markdown + YAML | ✅ |
-| Context7 | MCP remoto oficial | ✅ configurado |
-| Dashboard (agentes + memoria + grafo del vault) | Node/Express/WebSocket + React + D3 | ✅ probado |
+| Orchestrator + 4 subagents | Native Claude Code (`.claude/agents/*.md`) | ✅ |
+| `memory-engram` | Node.js + TypeScript + SQLite | ✅ tested |
+| `obsidian-bridge` | Node.js + TypeScript | ✅ tested |
+| Example Obsidian vault | Markdown | ✅ |
+| Example skill | Markdown + YAML | ✅ |
+| Context7 | Official remote MCP | ✅ configured |
+| Dashboard (agents + memory + vault graph) | Node/Express/WebSocket + React + D3 | ✅ tested |
 
-## Requisitos previos
+## Prerequisites
 
-| Requisito | Versión | Verificar |
+| Requirement | Version | Check |
 |---|---|---|
-| Node.js | 18+ (recomendado 20, ver `.nvmrc`) | `node --version` |
-| Claude Code | última | `claude --version` |
-| Git | cualquiera reciente | `git --version` |
-| Obsidian (opcional) | cualquiera | — |
+| Node.js | 18+ (20 recommended, see `.nvmrc`) | `node --version` |
+| Claude Code | latest | `claude --version` |
+| Git | any recent version | `git --version` |
+| Obsidian (optional) | any | — |
 
-Si ya usas Claude Code con suscripción Pro/Max, **eso es todo lo que necesitas** para autenticarte — no hace falta ninguna API key.
+If you already use Claude Code with a Pro/Max subscription, **that's all you need** to authenticate — no API key required.
 
-> Si usas `nvm`, corre `nvm use` en la raíz del proyecto (hay un `.nvmrc`) **antes** de instalar nada, y usa la misma terminal/versión para todos los pasos — mezclar versiones de Node entre carpetas rompe los módulos nativos (`better-sqlite3`).
+> If you use `nvm`, run `nvm use` in the project root (there's an `.nvmrc`) **before** installing anything, and use the same terminal/version for all the steps — mixing Node versions across folders breaks native modules (`better-sqlite3`).
 
-## Instalación
+## Installation
 
 ```bash
 git clone https://github.com/tu-usuario/claude-agent-stack.git
@@ -48,49 +48,49 @@ cd claude-agent-stack
 bash scripts/setup.sh
 ```
 
-Esto instala y compila `memory-engram`, `obsidian-bridge` y el dashboard (backend + cliente). No pide ni necesita ninguna credencial.
+This installs and builds `memory-engram`, `obsidian-bridge`, and the dashboard (backend + client). It doesn't ask for or need any credentials.
 
-Luego, en la misma carpeta:
+Then, in the same folder:
 
 ```bash
 claude
 ```
 
-Con tu sesión ya autenticada, eso es todo. Claude Code detecta automáticamente los subagentes, los servidores MCP (definidos en `.mcp.json`, habilitados vía `enableAllProjectMcpServers` en `.claude/settings.json`) y las skills.
+With your session already authenticated, that's it. Claude Code automatically detects the subagents, the MCP servers (defined in `.mcp.json`, enabled via `enableAllProjectMcpServers` in `.claude/settings.json`), and the skills.
 
-Verifica la conexión:
-
-```
-> ¿Qué servidores MCP tengo disponibles?
-```
-
-Deberías ver `context7`, `memory-engram` y `obsidian-bridge`.
-
-**Importante:** si editas `.claude/settings.json` con la sesión de Claude Code ya abierta, tienes que **salir (`/exit`) y volver a abrir `claude`** para que tome los cambios — los hooks se cargan al iniciar la sesión.
-
-## Cómo se usa
+Verify the connection:
 
 ```
-> Usa el agente orchestrator para investigar cómo funciona el rate
-  limiting en Express y documenta lo que encuentres en el vault
+> What MCP servers do I have available?
 ```
 
-Esto dispara el flujo completo: `orchestrator` delega a `researcher` (que consulta Context7), luego a `docs-writer` (que crea una nota en el vault vía `obsidian-bridge`).
+You should see `context7`, `memory-engram`, and `obsidian-bridge`.
 
-Memoria persistente:
+**Important:** if you edit `.claude/settings.json` while a Claude Code session is already open, you need to **exit (`/exit`) and reopen `claude`** for the changes to take effect — hooks are loaded when the session starts.
+
+## Usage
 
 ```
-> Recuerda que este proyecto usa Node.js y TypeScript
-> ¿Qué tecnología usa este proyecto?
+> Use the orchestrator agent to research how rate
+  limiting works in Express and document what you find in the vault
 ```
 
-## El dashboard
+This triggers the full flow: `orchestrator` delegates to `researcher` (which queries Context7), then to `docs-writer` (which creates a note in the vault via `obsidian-bridge`).
 
-![Vista general del dashboard: métricas, actividad y gráficas](public/preview-1.png)
+Persistent memory:
 
-![Vista de agentes, memoria y grafo del vault](public/preview-2.png)
+```
+> Remember that this project uses Node.js and TypeScript
+> What technology does this project use?
+```
 
-Dos terminales:
+## The Dashboard
+
+![Dashboard overview: metrics, activity, and charts](public/preview-1.png)
+
+![Agents, memory, and vault graph view](public/preview-2.png)
+
+Two terminals:
 
 ```bash
 # Terminal A
@@ -100,34 +100,34 @@ cd dashboard/server && npm run dev
 cd dashboard/client && npm run dev
 ```
 
-Abre `http://localhost:5173`. Verás en vivo: tarjetas de agentes (clic en la flecha para ver su historial), panel de memoria con barra de importancia y tags, grafo interactivo del vault (arrastra los nodos, pasa el cursor para resaltar conexiones, clic en ⤢ para verlo en pantalla completa), y un feed de actividad.
+Open `http://localhost:5173`. You'll see live: agent cards (click the arrow to view their history), a memory panel with an importance bar and tags, an interactive vault graph (drag the nodes, hover to highlight connections, click ⤢ to view it in full screen), and an activity feed.
 
-Detalle completo en [`dashboard/README.md`](dashboard/README.md).
+Full details in [`dashboard/README.md`](dashboard/README.md).
 
-## Configuración
+## Configuration
 
-Todo vive en `config/config.yaml` (sin secretos) y `.env` (opcional, ver abajo). Para agregar tus propios subagentes o skills, copia un archivo existente en `.claude/agents/` o `skills/` y ajusta la `description`.
+Everything lives in `config/config.yaml` (no secrets) and `.env` (optional, see below). To add your own subagents or skills, copy an existing file in `.claude/agents/` or `skills/` and adjust the `description`.
 
-## Uso opcional con API key
+## Optional API Key Usage
 
-**Esto no aplica si ya usas Claude Code con tu suscripción — sáltate esta sección.**
+**This doesn't apply if you already use Claude Code with your subscription — skip this section.**
 
-Para correr el orquestador de forma desatendida (CI, servidor): copia `.env.example` a `.env`, completa `ANTHROPIC_API_KEY`, y cambia `orchestration.engine` a `api` en `config/config.yaml`.
+To run the orchestrator unattended (CI, server): copy `.env.example` to `.env`, fill in `ANTHROPIC_API_KEY`, and change `orchestration.engine` to `api` in `config/config.yaml`.
 
-## Estructura del repositorio
+## Repository Structure
 
 ```
 claude-agent-stack/
 ├── .claude/
-│   ├── settings.json          # permisos + hooks + enableAllProjectMcpServers
+│   ├── settings.json          # permissions + hooks + enableAllProjectMcpServers
 │   └── agents/                # orchestrator, researcher, coder, docs-writer, memory-keeper
-├── .mcp.json                   # definición de los servidores MCP (context7, memory-engram, obsidian-bridge)
-├── config/config.yaml          # configuración del proyecto (sin secretos)
+├── .mcp.json                   # MCP server definitions (context7, memory-engram, obsidian-bridge)
+├── config/config.yaml          # project configuration (no secrets)
 ├── skills/example-skill/
 ├── mcp-servers/
-│   ├── memory-engram/          # servidor MCP de memoria (Node.js/TS + SQLite)
-│   └── obsidian-bridge/        # servidor MCP del vault (Node.js/TS)
-├── vault-demo/                 # vault de Obsidian de ejemplo
+│   ├── memory-engram/          # memory MCP server (Node.js/TS + SQLite)
+│   └── obsidian-bridge/        # vault MCP server (Node.js/TS)
+├── vault-demo/                 # example Obsidian vault
 ├── dashboard/
 │   ├── server/                 # backend Express + WebSocket
 │   └── client/                 # frontend React + D3
@@ -135,24 +135,24 @@ claude-agent-stack/
 └── scripts/setup.sh
 ```
 
-## Solución de problemas
+## Troubleshooting
 
-**"Claude Code no detecta los servidores MCP"** — verifica que compilaste ambos: `ls mcp-servers/memory-engram/dist` y `ls mcp-servers/obsidian-bridge/dist` deben mostrar `index.js`.
+**"Claude Code doesn't detect the MCP servers"** — verify that you built both: `ls mcp-servers/memory-engram/dist` and `ls mcp-servers/obsidian-bridge/dist` should show `index.js`.
 
-**"Error de better-sqlite3 al instalar / NODE_MODULE_VERSION mismatch"** — instalaste con una versión de Node y corres con otra. Corre `nvm use` en la raíz antes de instalar nada, y reinstala (`rm -rf node_modules package-lock.json && npm install`) en `mcp-servers/memory-engram`, `mcp-servers/obsidian-bridge` y `dashboard/server` con esa misma versión activa.
+**"better-sqlite3 error on install / NODE_MODULE_VERSION mismatch"** — you installed with one Node version and are running with another. Run `nvm use` in the root before installing anything, and reinstall (`rm -rf node_modules package-lock.json && npm install`) in `mcp-servers/memory-engram`, `mcp-servers/obsidian-bridge`, and `dashboard/server` with that same version active.
 
-**"Edité settings.json pero no pasa nada"** — reinicia la sesión de Claude Code (`/exit` y volver a abrir `claude`); los hooks se cargan solo al iniciar.
+**"I edited settings.json but nothing happens"** — restart the Claude Code session (`/exit` and reopen `claude`); hooks are only loaded at startup.
 
-**"El dashboard no muestra ningún agente"** — verifica `http://localhost:4000/api/health`. Genera un evento de prueba: `node mcp-servers/memory-engram/dist/log-event.js coder started "prueba"`.
+**"The dashboard doesn't show any agents"** — check `http://localhost:4000/api/health`. Generate a test event: `node mcp-servers/memory-engram/dist/log-event.js coder started "prueba"`.
 
-**"El grafo del vault aparece vacío"** — asegúrate de tener al menos una nota `.md` en `vault-demo/` con frontmatter válido; el panel actualiza cada 8 segundos.
+**"The vault graph appears empty"** — make sure you have at least one `.md` note in `vault-demo/` with valid frontmatter; the panel updates every 8 seconds.
 
 ## Roadmap
 
-- [x] Orquestador + subagentes + skills
-- [x] `memory-engram` + `obsidian-bridge`, probados end-to-end
-- [x] Dashboard completo: agentes, memoria, grafo del vault, modal de pantalla completa
+- [x] Orchestrator + subagents + skills
+- [x] `memory-engram` + `obsidian-bridge`, tested end-to-end
+- [x] Complete dashboard: agents, memory, vault graph, full-screen modal
 
-## Licencia
+## License
 
-MIT — ver [`LICENSE`](LICENSE).
+MIT — see [`LICENSE`](LICENSE).
